@@ -1,9 +1,20 @@
 "use server";
 
-import { requireOrganizationMember } from "@/features/auth/permissions";
-import { createOpportunity as createOpportunityCommand } from "./commands";
+import {
+  requireOrganizationMember,
+  requireUser,
+} from "@/features/auth/permissions";
+import {
+  archiveOpportunity as archiveOpportunityCommand,
+  createOpportunity as createOpportunityCommand,
+} from "./commands";
 
-export async function createOpportunity(input: unknown) {
-  const actor = await requireOrganizationMember();
-  return createOpportunityCommand(actor, input);
+export async function createOpportunity(organizationId: string, input: unknown) {
+  const actor = await requireOrganizationMember(organizationId);
+  return createOpportunityCommand(actor, organizationId, input);
+}
+
+export async function archiveOpportunity(id: string) {
+  const actor = await requireUser();
+  return archiveOpportunityCommand(actor, id);
 }

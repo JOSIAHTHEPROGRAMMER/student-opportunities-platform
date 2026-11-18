@@ -78,7 +78,7 @@ export async function createOpportunity(
 
   const data = createOpportunitySchema.parse(input);
   await connectToDatabase();
-  await requireActiveOrganization(organizationId);
+  await requireOpportunityCreationOrganization(organizationId);
 
   const opportunity = await Opportunity.create({
     ...data,
